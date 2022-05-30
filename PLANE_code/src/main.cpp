@@ -5,7 +5,8 @@
 #include "SPIFFS.h"
 #define LED_PIN 15
 
-Servo myservo;
+Servo myservo1;
+Servo myservo2;  
 const char *ssid = "plane_control";        //  *** 書き換え必要 ***
 const char *password = "oit1105noKey"; //  *** 書き換え必要（8文字以上）***
 
@@ -15,68 +16,84 @@ AsyncWebServer server(80); // ポート設定
 
 void left_Servo()
 {
-  myservo.attach(13);
-  myservo.write(90); // 初期化
-  delay(100);
-  myservo.write(180); // 開錠
-  delay(1000);
-  myservo.write(90); // ホームポジション
-  delay(1000);
-  myservo.detach();
+  myservo1.attach(13);
+  myservo2.attach(12);
+  myservo1.write(90); // 初期化
+  myservo2.write(90); // 初期化
+  myservo1.write(120); // 左翼を上に
+  myservo2.write(120); //右翼を下に
+  delay(500);
+  myservo1.write(90); // ホームポジション
+  myservo2.write(90); // ホームポジション
+  delay(500);
+  myservo1.detach();
+  myservo2.detach();
+
 }
 
 void right_Servo()
 {
-  myservo.attach(13);
-  myservo.write(90); // 初期化
-  delay(100);
-  myservo.write(160); // 閉鎖
-  delay(1000);
-  myservo.write(90); // ホームポジション
-  delay(1000);
-  myservo.detach();
+  myservo1.attach(13);
+  myservo2.attach(12);
+  myservo1.write(90); // 初期化
+  myservo2.write(90); // 初期化
+  myservo1.write(60); // 左翼を下に
+  myservo2.write(60); //右翼を上に
+  delay(500);
+  myservo1.write(90); // ホームポジション
+  myservo2.write(90); // ホームポジション
+  delay(500);
+  myservo1.detach();
+  myservo2.detach();
 }
 
 void up_Servo()
 {
-  myservo.attach(13);
-  myservo.write(90); // 初期化
-  delay(100);
-  myservo.write(140); // 閉鎖
-  delay(1000);
-  myservo.write(90); // ホームポジション
-  delay(1000);
-  myservo.detach();
+  myservo1.attach(13);
+  myservo2.attach(12);
+  myservo1.write(90); // 初期化
+  myservo2.write(90); // 初期化
+  myservo1.write(120); // 左翼を上に
+  myservo2.write(60); //右翼を上に
+  delay(500);
+  myservo1.write(90); // ホームポジション
+  myservo2.write(90); // ホームポジション
+  delay(500);
+  myservo1.detach();
+  myservo2.detach();
 }
 
-void accel_Servo()
-{
-  myservo.attach(13);
-  myservo.write(90); // 初期化
-  delay(100);
-  myservo.write(120); // 閉鎖
-  delay(1000);
-  myservo.write(90); // ホームポジション
-  delay(1000);
-  myservo.detach();
-}
+// void accel_Servo()
+// {
+//   myservo.attach(13);
+//   myservo.write(90); // 初期化
+//   delay(100);
+//   myservo.write(120); // 閉鎖
+//   delay(1000);
+//   myservo.write(90); // ホームポジション
+//   delay(1000);
+//   myservo.detach();
+// }
 
-void break_Servo()
-{
-  myservo.attach(13);
-  myservo.write(90); // 初期化
-  delay(100);
-  myservo.write(60); // 閉鎖
-  delay(1000);
-  myservo.write(90); // ホームポジション
-  delay(1000);
-  myservo.detach();
-}
+// void break_Servo()
+// {
+//   myservo.attach(13);
+//   myservo.write(90); // 初期化
+//   delay(100);
+//   myservo.write(60); // 閉鎖
+//   delay(1000);
+//   myservo.write(90); // ホームポジション
+//   delay(1000);
+//   myservo.detach();
+// }
 
 void setup()
 {
   Serial.begin(115200);
   pinMode(LED_PIN, OUTPUT);
+
+  myservo1.attach(13);
+  myservo2.attach(12, 500, 2400);
   // SPIFFSのセットアップ
   if (!SPIFFS.begin(true))
   {
@@ -103,10 +120,14 @@ void setup()
       [](AsyncWebServerRequest *request)
       {
         request->send(SPIFFS, "/index.html");
-        myservo.attach(13);
-        myservo.write(90);
+        myservo1.attach(13);
+        myservo2.attach(12);
+        myservo1.write(90);
+        myservo2.write(90);
+
         delay(100);
-        myservo.detach();
+        myservo1.detach();
+        myservo2.detach();
       });
   server.on(
       "/right", HTTP_GET,
@@ -136,24 +157,24 @@ void setup()
         Serial.println("off");
         up_Servo();
       }); 
-  server.on(
-      "/accel", HTTP_GET,
-      [](AsyncWebServerRequest *request)
-      {
-        request->send(SPIFFS, "/index.html");
-        digitalWrite(LED_PIN, LOW);
-        Serial.println("off");
-        accel_Servo();
-      });   
-  server.on(
-      "/break", HTTP_GET,
-      [](AsyncWebServerRequest *request)
-      {
-        request->send(SPIFFS, "/index.html");
-        digitalWrite(LED_PIN, LOW);
-        Serial.println("off");
-        break_Servo();
-      });
+  // server.on(
+  //     "/accel", HTTP_GET,
+  //     [](AsyncWebServerRequest *request)
+  //     {
+  //       request->send(SPIFFS, "/index.html");
+  //       digitalWrite(LED_PIN, LOW);
+  //       Serial.println("off");
+  //       accel_Servo();
+  //     });   
+  // server.on(
+  //     "/break", HTTP_GET,
+  //     [](AsyncWebServerRequest *request)
+  //     {
+  //       request->send(SPIFFS, "/index.html");
+  //       digitalWrite(LED_PIN, LOW);
+  //       Serial.println("off");
+  //       break_Servo();
+  //     });
   server.onNotFound(
       [](AsyncWebServerRequest *request)
       {
