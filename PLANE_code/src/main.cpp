@@ -7,13 +7,13 @@
 
 Servo myservo1;
 Servo myservo2;  
-const char *ssid = "plane_control_A";        //  *** 書き換え必要 ***
+const char *ssid = "plane-control-A";        //  *** 書き換え必要 ***
 const char *password = "oit1105noplane"; //  *** 書き換え必要（8文字以上）***
 const int MT_F = 02;
 const int MT_R = 04;
 
 
-const IPAddress ip(192, 168, 123, 46);
+const IPAddress ip(192, 168, 123, 48);
 const IPAddress subnet(255, 255, 255, 0);
 AsyncWebServer server(80); // ポート設定
 
