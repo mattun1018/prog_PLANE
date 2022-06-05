@@ -28,6 +28,7 @@ const int servoPin1 = 22;
 const int servoPin2 = 23;
 const int MT_F = 02;
 const int MT_R = 04;
+int speed;
 
 
 // This function is called every time the Virtual Pin 1 state changes
@@ -118,6 +119,7 @@ BLYNK_WRITE(V3) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
         speed = speed + 5;
     }
     while(speed==255){
+      analogWrite( MT_F, speed );
       
     }
 
@@ -173,4 +175,5 @@ void setup() {
 
 void loop() {
   Blynk.run();
+  analogWrite( MT_F, speed );
 }
