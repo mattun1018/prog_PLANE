@@ -15,8 +15,8 @@ char auth[] = BLYNK_AUTH_TOKEN;
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "eoRT-1e8d599-g";
-char pass[] = "6abb8bd4089e09";
+char ssid[] = "隼典のiPhone";
+char pass[] = "matsumoto";
 
 BlynkTimer timer;
 Servo myservo1;
