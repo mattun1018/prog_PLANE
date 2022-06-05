@@ -26,9 +26,9 @@ const int ledPin = 5;
 //サーボ
 const int servoPin1 = 22;
 const int servoPin2 = 23;
-const int MT_F = 02;
-const int MT_R = 04;
-int speed;
+const int MT_F = 12;
+const int MT_R = 14;
+int speed=0;
 
 
 // This function is called every time the Virtual Pin 1 state changes
@@ -108,22 +108,11 @@ BLYNK_WRITE(V3) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
   int buttonState = param.asInt();
   // Update state
   if(buttonState == HIGH){
-  int speed;
-    
-    analogWrite( MT_F, 0 );
-    analogWrite( MT_R, 0 );
-    
-    speed = 0;
-    while( speed <= 255 ){
-        analogWrite( MT_F, speed );
-        speed = speed + 5;
-    }
-    while(speed==255){
-      analogWrite( MT_F, speed );
-      
-    }
-
+    speed=speed+25;
      Serial.println("HIGH");
+     if(speed>255){
+       speed=255;
+     }
   }else{
      digitalWrite(ledPin, LOW);
      Serial.println("LOW");
@@ -134,12 +123,11 @@ BLYNK_WRITE(V4) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
 {
   int buttonState = param.asInt();
   if(buttonState == HIGH){
-  analogWrite( MT_F, 128 );
-  analogWrite( MT_R, 0 );
-
-    delay( 1000 );
-
+    speed=speed-25;
      Serial.println("HIGH");
+     if(speed<0){
+       speed=0;
+     }
   }else{
      digitalWrite(ledPin, LOW);
      Serial.println("LOW");
@@ -176,4 +164,5 @@ void setup() {
 void loop() {
   Blynk.run();
   analogWrite( MT_F, speed );
+  analogWrite( MT_R, 0 );
 }
