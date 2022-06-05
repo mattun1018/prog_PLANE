@@ -23,11 +23,10 @@ Servo myservo1;
 Servo myservo2;
 // the number of the LED pin
 const int ledPin = 5;
-//サーボ
-const int servoPin1 = 22;
-const int servoPin2 = 23;
-const int MT_F = 12;
-const int MT_R = 14;
+const int servoPin1 = 22;//サーボ
+const int servoPin2 = 23;//サーボ
+const int MT_F = 12;//DCモータ
+const int MT_R = 14;//DCモータ
 int speed=0;
 
 
