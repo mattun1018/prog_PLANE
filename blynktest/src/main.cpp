@@ -165,4 +165,5 @@ void loop() {
   Blynk.run();
   analogWrite( MT_F, speed );
   analogWrite( MT_R, 0 );
+  Serial.println(speed);
 }
