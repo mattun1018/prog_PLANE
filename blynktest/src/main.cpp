@@ -38,16 +38,16 @@ BLYNK_WRITE(V0) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
   if(buttonState == HIGH){
           myservo1.attach(22);
         myservo2.attach(23);
-        myservo1.write(90); // 初期化
-        myservo2.write(90); // 初期化
+        // myservo1.write(90); // 初期化
+        // myservo2.write(90); // 初期化
         myservo1.write(120); // 左翼を上に
         myservo2.write(120); //右翼を下に
         delay(500);
         myservo1.write(90); // ホームポジション
         myservo2.write(90); // ホームポジション
-        delay(500);
-        myservo1.detach();
-        myservo2.detach();
+        // delay(500);
+        // myservo1.detach();
+        // myservo2.detach();
   }else{
      digitalWrite(ledPin, LOW);
      Serial.println("LOW");
@@ -61,16 +61,16 @@ BLYNK_WRITE(V1) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
   if(buttonState == HIGH){
        myservo1.attach(22);
         myservo2.attach(23);
-        myservo1.write(90); // 初期化
-        myservo2.write(90); // 初期化
+        // myservo1.write(90); // 初期化
+        // myservo2.write(90); // 初期化
         myservo1.write(60); // 左翼を下に
         myservo2.write(60); //右翼を上に
         delay(500);
         myservo1.write(90); // ホームポジション
         myservo2.write(90); // ホームポジション
-        delay(500);
-        myservo1.detach();
-        myservo2.detach();
+        // delay(500);
+        // myservo1.detach();
+        // myservo2.detach();
      Serial.println("HIGH");
   }else{
      digitalWrite(ledPin, LOW);
@@ -85,16 +85,16 @@ BLYNK_WRITE(V2) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
   if(buttonState == HIGH){
     myservo1.attach(22);
     myservo2.attach(23);
-    myservo1.write(90); // 初期化
-    myservo2.write(90); // 初期化
+    // myservo1.write(90); // 初期化
+    // myservo2.write(90); // 初期化
     myservo1.write(120); // 左翼を上に
     myservo2.write(60); //右翼を上に
     delay(500);
     myservo1.write(90); // ホームポジション
     myservo2.write(90); // ホームポジション
-    delay(500);
-    myservo1.detach();
-    myservo2.detach();
+    // delay(500);
+    // myservo1.detach();
+    // myservo2.detach();
      Serial.println("HIGH");
   }else{
      digitalWrite(ledPin, LOW);
