@@ -28,6 +28,10 @@ const int servoPin2 = 23;//サーボ
 const int MT_F = 12;//DCモータ
 const int MT_R = 14;//DCモータ
 int speed=0;
+bool isLight=false;
+#define C5 523.251
+#define BUZZER_PIN 25
+#define neo_PIN 33
 
 
 // This function is called every time the Virtual Pin 1 state changes
@@ -133,6 +137,33 @@ BLYNK_WRITE(V4) ///LightPin:Relay_operates_on_LOW_Input_Voltage_coneccted_NC
   }
 }
 
+BLYNK_WRITE (V5)
+{
+  int buttonState = param.asInt();
+  if(buttonState == HIGH){
+    isLight=isLight?false:true;
+    Serial.println("HIGH");
+  }else{
+    digitalWrite(ledPin, LOW);
+    Serial.println("LOW");
+    
+  }
+}
+int i;
+BLYNK_WRITE (V6)
+{
+  int buttonState = param.asInt();
+  if(buttonState == HIGH){
+    for(i=0;i<8;i++){
+      tone(BUZZER_PIN,C5,250);
+
+      }
+    Serial.println("HIGH");
+  }else{
+    digitalWrite(ledPin, LOW);
+    Serial.println("LOW");
+  }
+}
 
 
 // This function is called every time the device is connected to the Blynk.Cloud
@@ -158,6 +189,8 @@ void setup() {
 
   // Setup a function to be called every second
   //  timer.setInterval(1000L, myTimerEvent);
+  pinMode(12,OUTPUT);
+  
 }
 
 void loop() {
@@ -165,4 +198,7 @@ void loop() {
   analogWrite( MT_F, speed );
   analogWrite( MT_R, 0 );
   Serial.println(speed);
+  // isLight?
+  digitalWrite(12,HIGH);
+  // digitalWrite(33,LOW);
 }
