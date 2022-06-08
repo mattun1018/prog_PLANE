@@ -9,6 +9,7 @@
 #include <BlynkSimpleEsp32.h>
 #include <math.h>
 #include <ESP32Servo.h>
+#include <Adafruit_NeoPixel.h>
 
 char auth[] = BLYNK_AUTH_TOKEN;
 
@@ -30,8 +31,14 @@ const int MT_R = 14;//DCモータ
 int speed=0;
 bool isLight=false;
 #define C5 523.251
-#define BUZZER_PIN 25
-#define neo_PIN 33
+#define BUZZER_PIN 32
+#define NEO1_PIN 18
+#define NUMPIXELS 8
+Adafruit_NeoPixel pixels1(NUMPIXELS, NEO1_PIN, NEO_GRB + NEO_KHZ800);
+#define NEO2_PIN 19
+#define NUMPIXELS 8
+Adafruit_NeoPixel pixels2(NUMPIXELS, NEO2_PIN, NEO_GRB + NEO_KHZ800);
+
 
 
 // This function is called every time the Virtual Pin 1 state changes
@@ -141,8 +148,19 @@ BLYNK_WRITE (V5)
 {
   int buttonState = param.asInt();
   if(buttonState == HIGH){
-    isLight=isLight?false:true;
-    Serial.println("HIGH");
+    pixels1.clear(); //NeoPixelの出力をリセット
+    pixels2.clear();
+    for(int i=0; i<NUMPIXELS; i++) { //LEDを１つずつ制御
+      pixels1.setPixelColor(i, pixels1.Color(60-8*i, i*10, i*8)); //LEDの色を設定
+      pixels1.show();   //LEDに色を反映
+      pixels2.setPixelColor(i, pixels2.Color(60-8*i, i*10, i*8));
+      pixels2.show();
+      delay(125); //125ms待機
+      Serial.println("HIGH");
+    }
+    delay(500);
+    pixels1.clear(); //NeoPixelの出力をリセット
+    pixels2.clear();
   }else{
     digitalWrite(ledPin, LOW);
     Serial.println("LOW");
@@ -176,6 +194,8 @@ BLYNK_CONNECTED()
 void setup() {
   // Serial port for debugging purposes
   Serial.begin(115200);
+  pixels1.begin();
+  pixels2.begin();
 
   //pinMode setting
   pinMode(ledPin , OUTPUT);
@@ -189,7 +209,6 @@ void setup() {
 
   // Setup a function to be called every second
   //  timer.setInterval(1000L, myTimerEvent);
-  pinMode(12,OUTPUT);
   
 }
 
@@ -198,7 +217,13 @@ void loop() {
   analogWrite( MT_F, speed );
   analogWrite( MT_R, 0 );
   Serial.println(speed);
+  for(int i=0; i<NUMPIXELS; i++) { //LEDを１つずつ制御
+      pixels1.setPixelColor(i, pixels1.Color(0,0,0)); //LEDの色を設定
+      pixels1.show();   //LEDに色を反映
+      pixels2.setPixelColor(i, pixels2.Color(0,0,0));
+      pixels2.show();
+  }
   // isLight?
-  digitalWrite(12,HIGH);
+  // digitalWrite(33,HIGH):
   // digitalWrite(33,LOW);
 }
